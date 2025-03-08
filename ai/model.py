@@ -3,6 +3,7 @@ import json
 import os
 import re
 import math
+import time
 
 class AIModel:
     """A simple artificial intelligence model class"""
@@ -12,6 +13,8 @@ class AIModel:
         self.responses = self._load_responses()
         self.conversation_history = []
         self.max_history = 10  # Maximum conversation history to keep
+        self.teaching_mode = False  # Teaching mode flag
+        self.learned_data = self._load_learned_data()
     
     def _load_responses(self):
         """Load response data"""
@@ -61,12 +64,31 @@ class AIModel:
                 "power": "{a} raised to the power of {b} is {result}."
             },
             "tr_math_answers": {
-                "addition": "Toplamı {a} ve {b} {result} eder.",
-                "subtraction": "Farkı {a} ve {b} {result} eder.",
-                "multiplication": "Çarpımı {a} ve {b} {result} eder.",
-                "division": "Bölümü {a} ve {b} {result} eder.",
-                "square_root": "Karekökü {a} {result} eder.",
-                "power": "{a} üzeri {b} {result} eder."
+                "addition": "{a} ile {b} toplamı {result} eder.",
+                "subtraction": "{a} eksi {b} işleminin sonucu {result} eder.",
+                "multiplication": "{a} çarpı {b} işleminin sonucu {result} eder.",
+                "division": "{a} bölü {b} işleminin sonucu {result} eder.",
+                "square_root": "{a} sayısının karekökü {result} eder.",
+                "power": "{a} üssü {b} işleminin sonucu {result} eder.",
+                "general": "{expression} işleminin sonucu {result} eder."
+            },
+            "teaching_mode": {
+                "activated": "Teaching mode activated. You can now teach me new information. Please enter the information in the format: 'Question: [question] Answer: [answer]'",
+                "deactivated": "Teaching mode deactivated. Thank you for teaching me new information.",
+                "saved": "Thank you! I've saved this information. Would you like to teach me something else?",
+                "format_error": "Please enter the information in the format: 'Question: [question] Answer: [answer]'",
+                "already_exists": "This question already exists in my database. Would you like to update it?",
+                "updated": "Information successfully updated.",
+                "help": "In teaching mode, you can teach me new information. Enter the information in the format: 'Question: [question] Answer: [answer]'. To exit teaching mode, type 'exit teaching mode'."
+            },
+            "tr_teaching_mode": {
+                "activated": "Öğretme modu aktif edildi. Şimdi bana yeni bilgiler öğretebilirsiniz. Bilgiyi şu formatta girin: 'Soru: [soru] Cevap: [cevap]'",
+                "deactivated": "Öğretme modu devre dışı bırakıldı. Teşekkür ederim, öğrettiğiniz bilgileri kaydettim.",
+                "saved": "Teşekkürler! Bu bilgiyi kaydettim. Başka bir şey öğretmek ister misiniz?",
+                "format_error": "Lütfen bilgiyi şu formatta girin: 'Soru: [soru] Cevap: [cevap]'",
+                "already_exists": "Bu soru zaten veritabanımda mevcut. Güncellemek ister misiniz?",
+                "updated": "Bilgi başarıyla güncellendi.",
+                "help": "Öğretme modunda bana yeni bilgiler öğretebilirsiniz. Bilgiyi 'Soru: [soru] Cevap: [cevap]' formatında girin. Öğretme modundan çıkmak için 'öğretme modunu kapat' yazabilirsiniz."
             }
         }
         
@@ -92,6 +114,34 @@ class AIModel:
         
         return default_responses
     
+    def _load_learned_data(self):
+        """Load learned data from file"""
+        learned_data_file = os.path.join(os.path.dirname(__file__), 'data', 'learned_data.json')
+        if os.path.exists(learned_data_file):
+            try:
+                with open(learned_data_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+            except Exception as e:
+                print(f"Error loading learned data: {e}")
+                return {}
+        else:
+            return {}
+    
+    def _save_learned_data(self):
+        """Save learned data to file"""
+        learned_data_file = os.path.join(os.path.dirname(__file__), 'data', 'learned_data.json')
+        data_dir = os.path.dirname(learned_data_file)
+        
+        # Create data directory if it doesn't exist
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+        
+        try:
+            with open(learned_data_file, 'w', encoding='utf-8') as f:
+                json.dump(self.learned_data, f, ensure_ascii=False, indent=4)
+        except Exception as e:
+            print(f"Error saving learned data: {e}")
+    
     def generate_response(self, user_message):
         """Generate a response to the user message"""
         # Add to conversation history
@@ -99,6 +149,29 @@ class AIModel:
         
         # Process the message
         processed_message = self._preprocess_message(user_message)
+        
+        # Detect language (simple check for Turkish keywords)
+        is_turkish = any(word in processed_message for word in ['merhaba', 'selam', 'nasılsın', 'nedir', 'öğret', 'kapat'])
+        
+        # Check if it's a teaching mode command
+        teaching_response = self._process_teaching_mode(user_message, is_turkish)
+        if teaching_response:
+            self.conversation_history.append({"ai": teaching_response})
+            return teaching_response
+        
+        # If in teaching mode, don't process other commands
+        if self.teaching_mode:
+            # Process teaching input
+            teaching_input_response = self._process_teaching_input(user_message, is_turkish)
+            self.conversation_history.append({"ai": teaching_input_response})
+            return teaching_input_response
+        
+        # Check if the question exists in learned data
+        for question, answer in self.learned_data.items():
+            # Simple fuzzy matching
+            if self._is_similar(processed_message, question.lower()):
+                self.conversation_history.append({"ai": answer})
+                return answer
         
         # Check if it's a math question
         math_result = self._process_math_question(user_message)
@@ -122,6 +195,74 @@ class AIModel:
             self.conversation_history = self.conversation_history[-self.max_history*2:]
         
         return response
+    
+    def _is_similar(self, text1, text2, threshold=0.7):
+        """Check if two texts are similar using a simple similarity measure"""
+        # Convert to sets of words
+        words1 = set(text1.split())
+        words2 = set(text2.split())
+        
+        # Calculate Jaccard similarity
+        intersection = len(words1.intersection(words2))
+        union = len(words1.union(words2))
+        
+        if union == 0:
+            return False
+        
+        similarity = intersection / union
+        return similarity >= threshold
+    
+    def _process_teaching_mode(self, message, is_turkish):
+        """Process teaching mode commands"""
+        response_dict = self.responses["tr_teaching_mode"] if is_turkish else self.responses["teaching_mode"]
+        
+        # Check for teaching mode activation
+        if re.search(r'(activate|enable|start|turn on)\s+teaching\s+mode', message, re.IGNORECASE) or \
+           re.search(r'(öğretme|öğrenme)\s+mod(u|unu)\s+(aç|aktif|başlat|etkinleştir)', message, re.IGNORECASE):
+            self.teaching_mode = True
+            return response_dict["activated"]
+        
+        # Check for teaching mode deactivation
+        elif re.search(r'(deactivate|disable|stop|turn off|exit)\s+teaching\s+mode', message, re.IGNORECASE) or \
+             re.search(r'(öğretme|öğrenme)\s+mod(u|unu)\s+(kapat|devre dışı|durdur)', message, re.IGNORECASE):
+            self.teaching_mode = False
+            return response_dict["deactivated"]
+        
+        # Check for teaching mode help
+        elif re.search(r'(how\s+to|help)\s+(use|with)\s+teaching\s+mode', message, re.IGNORECASE) or \
+             re.search(r'öğretme\s+mod(u|unu)\s+(nasıl|yardım)', message, re.IGNORECASE):
+            return response_dict["help"]
+        
+        return None
+    
+    def _process_teaching_input(self, message, is_turkish):
+        """Process input in teaching mode"""
+        response_dict = self.responses["tr_teaching_mode"] if is_turkish else self.responses["teaching_mode"]
+        
+        # Check for question-answer format
+        if is_turkish:
+            pattern = re.compile(r'soru:\s*(.+?)\s*cevap:\s*(.+)', re.IGNORECASE | re.DOTALL)
+        else:
+            pattern = re.compile(r'question:\s*(.+?)\s*answer:\s*(.+)', re.IGNORECASE | re.DOTALL)
+        
+        match = pattern.search(message)
+        if match:
+            question = match.group(1).strip()
+            answer = match.group(2).strip()
+            
+            # Check if question already exists
+            if question.lower() in [q.lower() for q in self.learned_data.keys()]:
+                # For simplicity, we'll just update it
+                self.learned_data[question] = answer
+                self._save_learned_data()
+                return response_dict["updated"]
+            else:
+                # Add new question-answer pair
+                self.learned_data[question] = answer
+                self._save_learned_data()
+                return response_dict["saved"]
+        else:
+            return response_dict["format_error"]
     
     def _preprocess_message(self, message):
         """Process the message"""
