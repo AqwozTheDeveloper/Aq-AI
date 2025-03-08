@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600">
+  <!-- Arka plan daire -->
+  <circle cx="400" cy="300" r="250" fill="#f0f4ff" />
+  
+  <!-- Beyin ana hatları -->
+  <path d="M400 150 C 500 150, 550 200, 550 300 C 550 400, 500 450, 400 450 C 300 450, 250 400, 250 300 C 250 200, 300 150, 400 150" 
+        fill="#6c63ff" fill-opacity="0.2" stroke="#6c63ff" stroke-width="3" />
+  
+  <!-- Beyin bağlantıları -->
+  <g stroke="#6c63ff" stroke-width="2">
+    <line x1="300" y1="200" x2="500" y2="200" />
+    <line x1="300" y1="250" x2="500" y2="250" />
+    <line x1="300" y1="300" x2="500" y2="300" />
+    <line x1="300" y1="350" x2="500" y2="350" />
+    <line x1="300" y1="400" x2="500" y2="400" />
+    
+    <line x1="350" y1="175" x2="350" y2="425" />
+    <line x1="400" y1="175" x2="400" y2="425" />
+    <line x1="450" y1="175" x2="450" y2="425" />
+  </g>
+  
+  <!-- Nöronlar -->
+  <g>
+    <circle cx="300" cy="200" r="8" fill="#6c63ff" />
+    <circle cx="350" cy="200" r="8" fill="#6c63ff" />
+    <circle cx="400" cy="200" r="8" fill="#6c63ff" />
+    <circle cx="450" cy="200" r="8" fill="#6c63ff" />
+    <circle cx="500" cy="200" r="8" fill="#6c63ff" />
+    
+    <circle cx="300" cy="250" r="8" fill="#6c63ff" />
+    <circle cx="350" cy="250" r="8" fill="#6c63ff" />
+    <circle cx="400" cy="250" r="8" fill="#6c63ff" />
+    <circle cx="450" cy="250" r="8" fill="#6c63ff" />
+    <circle cx="500" cy="250" r="8" fill="#6c63ff" />
+    
+    <circle cx="300" cy="300" r="8" fill="#6c63ff" />
+    <circle cx="350" cy="300" r="8" fill="#6c63ff" />
+    <circle cx="400" cy="300" r="8" fill="#6c63ff" />
+    <circle cx="450" cy="300" r="8" fill="#6c63ff" />
+    <circle cx="500" cy="300" r="8" fill="#6c63ff" />
+    
+    <circle cx="300" cy="350" r="8" fill="#6c63ff" />
+    <circle cx="350" cy="350" r="8" fill="#6c63ff" />
+    <circle cx="400" cy="350" r="8" fill="#6c63ff" />
+    <circle cx="450" cy="350" r="8" fill="#6c63ff" />
+    <circle cx="500" cy="350" r="8" fill="#6c63ff" />
+    
+    <circle cx="300" cy="400" r="8" fill="#6c63ff" />
+    <circle cx="350" cy="400" r="8" fill="#6c63ff" />
+    <circle cx="400" cy="400" r="8" fill="#6c63ff" />
+    <circle cx="450" cy="400" r="8" fill="#6c63ff" />
+    <circle cx="500" cy="400" r="8" fill="#6c63ff" />
+  </g>
+  
+  <!-- Animasyonlu parçacıklar -->
+  <g>
+    <circle cx="320" cy="220" r="3" fill="#4a45b1">
+      <animate attributeName="cx" values="320;340;320" dur="3s" repeatCount="indefinite" />
+      <animate attributeName="cy" values="220;240;220" dur="3s" repeatCount="indefinite" />
+    </circle>
+    
+    <circle cx="370" cy="270" r="3" fill="#4a45b1">
+      <animate attributeName="cx" values="370;390;370" dur="2.5s" repeatCount="indefinite" />
+      <animate attributeName="cy" values="270;290;270" dur="2.5s" repeatCount="indefinite" />
+    </circle>
+    
+    <circle cx="420" cy="320" r="3" fill="#4a45b1">
+      <animate attributeName="cx" values="420;440;420" dur="4s" repeatCount="indefinite" />
+      <animate attributeName="cy" values="320;340;320" dur="4s" repeatCount="indefinite" />
+    </circle>
+    
+    <circle cx="470" cy="370" r="3" fill="#4a45b1">
+      <animate attributeName="cx" values="470;490;470" dur="3.5s" repeatCount="indefinite" />
+      <animate attributeName="cy" values="370;390;370" dur="3.5s" repeatCount="indefinite" />
+    </circle>
+  </g>
+  
+  <!-- Dijital veri akışı -->
+  <g font-family="monospace" font-size="10" fill="#2a2a72">
+    <text x="280" y="180">10110101</text>
+    <text x="330" y="230">01001010</text>
+    <text x="380" y="280">11010010</text>
+    <text x="430" y="330">00101101</text>
+    <text x="480" y="380">10101010</text>
+  </g>
+  
+  <!-- Robotik yüz özellikleri -->
+  <g transform="translate(400, 300) scale(0.8)">
+    <!-- Yüz çerçevesi -->
+    <rect x="-60" y="-80" width="120" height="160" rx="20" ry="20" fill="none" stroke="#2a2a72" stroke-width="2" />
+    
+    <!-- Gözler -->
+    <rect x="-40" y="-50" width="25" height="15" rx="5" ry="5" fill="#6c63ff" />
+    <rect x="15" y="-50" width="25" height="15" rx="5" ry="5" fill="#6c63ff" />
+    
+    <!-- Ağız -->
+    <path d="M-30 20 L30 20" stroke="#2a2a72" stroke-width="2" />
+    <path d="M-20 30 L20 30" stroke="#2a2a72" stroke-width="2" />
+    <path d="M-10 40 L10 40" stroke="#2a2a72" stroke-width="2" />
+  </g>
+  
+  <!-- Dekoratif elementler -->
+  <g stroke="#6c63ff" stroke-width="1" stroke-dasharray="5,5">
+    <circle cx="400" cy="300" r="200" fill="none" />
+    <circle cx="400" cy="300" r="150" fill="none" />
+  </g>
+</svg> 

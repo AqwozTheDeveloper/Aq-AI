@@ -1,0 +1,49 @@
+{
+    "greetings": [
+        "Hello! How can I assist you as the AqAI assistant?",
+        "Hi! Would you like to learn more about our AI solutions?",
+        "Welcome! I'm the AI assistant at AqAI. How can I help you?"
+    ],
+    "ai_info": [
+        "Artificial intelligence is computer systems that mimic human intelligence and have learning, problem-solving, and decision-making capabilities.",
+        "AI includes algorithms that learn from large datasets and become smarter over time.",
+        "Artificial intelligence encompasses many subfields including natural language processing, computer vision, robotics, and machine learning."
+    ],
+    "services": [
+        "At AqAI, we develop custom AI solutions for your business. We offer customer service bots, data analysis, and prediction models.",
+        "Our services include natural language processing, image recognition, recommendation systems, and automated decision-making systems.",
+        "We provide customized AI solutions based on your business needs. We develop data analysis, prediction models, and automated decision-making systems."
+    ],
+    "pricing": [
+        "Pricing varies depending on the scope and requirements of your project. Please contact us for detailed information.",
+        "We offer custom pricing for each project. We can schedule a meeting to understand your needs.",
+        "For more information about pricing, you can fill out the contact form or send an email to info@aqai.com."
+    ],
+    "case_studies": [
+        "Our success stories include a recommendation system that increased an e-commerce company's sales by 30% and a prediction model that reduced a manufacturing company's costs by 25%.",
+        "One of our clients reduced their customer service costs by 40% and increased customer satisfaction thanks to our natural language processing solution.",
+        "We developed a risk assessment model for a financial company that automated the credit approval process and reduced the error rate by 60%."
+    ],
+    "mathematics": [
+        "I can help with basic mathematical calculations. What would you like to calculate?",
+        "Our mathematical modeling services can solve complex optimization problems for your business.",
+        "Mathematics is at the core of our AI algorithms. We use advanced statistical methods to analyze data and make predictions."
+    ],
+    "math_answers": {
+        "addition": "The sum of {a} and {b} is {result}.",
+        "subtraction": "The difference between {a} and {b} is {result}.",
+        "multiplication": "The product of {a} and {b} is {result}.",
+        "division": "The result of dividing {a} by {b} is {result}.",
+        "square_root": "The square root of {a} is {result}.",
+        "power": "{a} raised to the power of {b} is {result}."
+    },
+    "tr_math_answers": {
+        "addition": "{a} ile {b} toplamı {result} eder.",
+        "subtraction": "{a} eksi {b} işleminin sonucu {result} eder.",
+        "multiplication": "{a} çarpı {b} işleminin sonucu {result} eder.",
+        "division": "{a} bölü {b} işleminin sonucu {result} eder.",
+        "square_root": "{a} sayısının karekökü {result} eder.",
+        "power": "{a} üssü {b} işleminin sonucu {result} eder.",
+        "general": "{expression} işleminin sonucu {result} eder."
+    }
+} 

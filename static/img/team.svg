@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <rect width="800" height="400" fill="#e0e0e0"/>
+  <text x="400" y="200" font-family="Arial" font-size="30" text-anchor="middle" fill="#666">Takım Fotoğrafı</text>
+  <g transform="translate(250, 150)">
+    <!-- Kişi 1 -->
+    <circle cx="50" cy="50" r="40" fill="#6c63ff" opacity="0.8"/>
+    <circle cx="50" cy="30" r="15" fill="#fff"/>
+    <rect x="25" y="60" width="50" height="30" rx="10" fill="#fff"/>
+  </g>
+  <g transform="translate(350, 150)">
+    <!-- Kişi 2 -->
+    <circle cx="50" cy="50" r="40" fill="#6c63ff" opacity="0.8"/>
+    <circle cx="50" cy="30" r="15" fill="#fff"/>
+    <rect x="25" y="60" width="50" height="30" rx="10" fill="#fff"/>
+  </g>
+  <g transform="translate(450, 150)">
+    <!-- Kişi 3 -->
+    <circle cx="50" cy="50" r="40" fill="#6c63ff" opacity="0.8"/>
+    <circle cx="50" cy="30" r="15" fill="#fff"/>
+    <rect x="25" y="60" width="50" height="30" rx="10" fill="#fff"/>
+  </g>
+</svg> 
