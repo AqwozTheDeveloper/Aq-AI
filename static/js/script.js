@@ -61,6 +61,15 @@ async function sendMessage() {
         // Clear input field
         userInput.value = '';
         
+        // Show loading animation
+        const loadingElement = document.createElement('div');
+        loadingElement.classList.add('message', 'bot', 'loading');
+        loadingElement.innerHTML = 'Thinking<div class="loading-dots"><span></span><span></span><span></span></div>';
+        chatMessages.appendChild(loadingElement);
+        
+        // Auto scroll
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+        
         try {
             // Send request to API
             const response = await fetch(CHAT_API, {
@@ -70,6 +79,9 @@ async function sendMessage() {
                 },
                 body: JSON.stringify({ message })
             });
+            
+            // Remove loading animation
+            chatMessages.removeChild(loadingElement);
             
             if (response.ok) {
                 const data = await response.json();
@@ -81,6 +93,9 @@ async function sendMessage() {
                 console.error('API response error:', response.status);
             }
         } catch (error) {
+            // Remove loading animation
+            chatMessages.removeChild(loadingElement);
+            
             // Use fallback response in case of connection error
             const randomResponse = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
             addMessage(randomResponse, 'bot');

@@ -147,6 +147,10 @@ class AIModel:
         # Add to conversation history
         self.conversation_history.append({"user": user_message})
         
+        # Simulate thinking time (0.5 to 1.5 seconds)
+        thinking_time = random.uniform(0.5, 1.5)
+        time.sleep(thinking_time)
+        
         # Process the message
         processed_message = self._preprocess_message(user_message)
         
@@ -161,6 +165,14 @@ class AIModel:
         
         # If in teaching mode, don't process other commands
         if self.teaching_mode:
+            # Check for simple stop command
+            if user_message.lower().strip() == "stop" or user_message.lower().strip() == "dur":
+                self.teaching_mode = False
+                response_dict = self.responses["tr_teaching_mode"] if is_turkish else self.responses["teaching_mode"]
+                deactivation_response = response_dict["deactivated"]
+                self.conversation_history.append({"ai": deactivation_response})
+                return deactivation_response
+            
             # Process teaching input
             teaching_input_response = self._process_teaching_input(user_message, is_turkish)
             self.conversation_history.append({"ai": teaching_input_response})
@@ -224,7 +236,8 @@ class AIModel:
         
         # Check for teaching mode deactivation
         elif re.search(r'(deactivate|disable|stop|turn off|exit)\s+teaching\s+mode', message, re.IGNORECASE) or \
-             re.search(r'(öğretme|öğrenme)\s+mod(u|unu)\s+(kapat|devre dışı|durdur)', message, re.IGNORECASE):
+             re.search(r'(öğretme|öğrenme)\s+mod(u|unu)\s+(kapat|devre dışı|durdur)', message, re.IGNORECASE) or \
+             message.lower().strip() == "stop" or message.lower().strip() == "dur":
             self.teaching_mode = False
             return response_dict["deactivated"]
         
