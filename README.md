@@ -103,4 +103,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For questions or feedback: Discord: aqwoz
+For questions or feedback my discord:aqwoz
